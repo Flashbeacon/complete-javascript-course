@@ -1,4 +1,4 @@
-<!DOCTYPEhtml>
+<!DOCTYPE html>
 <html lang="en">
 	<head>
 		<meta name="viewport" content="width=device-width" initial-scale="1.0">
@@ -9,6 +9,7 @@
 		</style>
 	</head>
 	<body>
+		<pre id="lesson-content"></pre>
 		<header>
 			<div id="top-header">
 				<div id="logo">
@@ -33,10 +34,30 @@
 			</div>
 			<div class="lessonslist">
 				<ul>
-					<li>Lesson 1</li>
+					<li class="lesson" data-file="01-Fundamentals-Part-1/final/script.js">Lesson 1</li>
+					<li class="lesson" data-file="02-Fundamentals-Part-2/final/script.js">Lesson 2</li>
+					<li class="lesson" data-file="03-Developer-Skills/final/script.js">Lesson 3</li>
 				</ul>
 			</div>
 		</main>
+		<script>
+			document.querySelectorAll(".lesson").forEach(lesson => {
+				lesson.addEventListener("click", async () => {
+					try {
+						const response = await fetch(lesson.dataset.file);
+					if (!response.ok) {
+						throw new Error("File not found");
+						}
+						const code = await response.text();
+						document.getElementById("lesson-content").textContent = code;
+					} catch (err) {
+						document.getElementById("lesson-content").textContent = "Error loading lesson.";
+						alert(err);
+					}
+				});
+			});
+					
+		</script>
 	</body>
 
 </html>
