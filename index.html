@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JavaScript Course</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,sans-serif;background:#0f172a;color:#fff}
+header{height:70px;background:#111827;border-bottom:1px solid #273449;display:flex;justify-content:space-between;align-items:center;padding:0 30px}
+nav ul{display:flex;gap:20px;list-style:none}
+nav a{text-decoration:none;color:#ddd}
+main{display:grid;grid-template-columns:280px 1fr;height:calc(100vh - 70px)}
+.lessonslist{background:#111827;border-right:1px solid #273449}
+.lessonslist ul{list-style:none;padding:20px}
+.lesson{padding:14px 16px;margin-bottom:10px;background:#1e293b;border-radius:8px;cursor:pointer}
+.lesson:hover,.lesson.selected{background:#2563eb}
+#lesson-content{padding:30px;white-space:pre-wrap;overflow:auto;font:15px Consolas,monospace}
+</style>
+</head>
+<body>
+<header>
+<h2>JavaScript Course</h2>
+<nav><ul><li><a href="#">Home</a></li><li><a href="#">About Us</a></li></ul></nav>
+</header>
+<main>
+<div class="lessonslist">
+<ul>
+<li class="lesson" data-file="01-Fundamentals-Part-1/final/script.js">Lesson 1</li>
+<li class="lesson" data-file="02-Fundamentals-Part-2/final/script.js">Lesson 2</li>
+<li class="lesson" data-file="03-Developer-Skills/final/script.js">Lesson 3</li>
+</ul>
+</div>
+<pre id="lesson-content">Select a lesson from the left.</pre>
+</main>
+<script>
+document.querySelectorAll(".lesson").forEach(lesson=>{
+lesson.addEventListener("click",async()=>{
+document.querySelectorAll(".lesson").forEach(l=>l.classList.remove("selected"));
+lesson.classList.add("selected");
+try{
+const response=await fetch(lesson.dataset.file);
+if(!response.ok) throw new Error("File not found");
+document.getElementById("lesson-content").textContent=await response.text();
+}catch(e){
+document.getElementById("lesson-content").textContent="Error loading lesson.";
+console.error(e);
+}
+});
+});
+</script>
+</body>
+</html>
